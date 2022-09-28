@@ -1,0 +1,58 @@
+Run locally
+===========
+UI=>
+yarn install
+yarn watch
+yarn dev-server
+
+BE=>
+yarn install
+yarn watch
+
+Check with local docker
+=======================
+BE=>
+docker build -t testbe . --no-cache
+docker run -p 8000:8000 testbe
+http://localhost:8000/user-api-dev/devLaunch
+
+UI=>
+docker build -t testfe . --no-cache
+docker run -p 80:80 testfe
+
+Deploy and run in k8
+====================
+- point cmd to minikube docker
+minikube -p minikube docker-env --shell powershell | Invoke-Expression
+
+- build
+docker build -t testbe . --no-cache
+docker build -t testfe . --no-cache
+
+- apply kubernetes files
+kubectl apply -f services...
+kubectl apply -f deployments...
+kubectl apply -f ingress...
+
+- enable minikube ingress (make sure your internet connection is not slow)
+minikube addons enable ingress
+kubectl get pods -n ingress-nginx
+minikube addons enable ingress-dns
+minikube tunnel
+
+Add the minikube IP to the windows host file
+============================================
+172.21.239.112 app.test.com
+
+Access application
+============================================
+http://app.test.com/api/user-api-dev/health
+http://app.test.com/api/user-api-dev/devLaunch
+
+
+Useful debug commands
+=====================
+docker exec -ti <container_id> bash --- to access running containers and check the contents
+kubectl get pods -o wide --- get running pods
+kubectl logs --since=10m <pod_name>
+kubectl get ingress -o wide --- get running ingress

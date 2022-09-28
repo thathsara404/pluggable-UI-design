@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-be
+  labels:
+    app: test-be
+spec:
+  selector:
+    matchLabels:
+      app: test-be
+  template:
+    metadata:
+      labels:
+        app: test-be
+    spec:
+      containers:
+        - name: test-be
+          image: testbe:latest
+          imagePullPolicy: Never
+          startupProbe:
+                  httpGet:
+                    path: /user-api-dev/health
+                    port: 8000
+                  failureThreshold: 10
+                  periodSeconds: 5

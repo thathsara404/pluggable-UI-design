@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-fe
+  labels:
+    app: test-fe
+spec:
+  selector:
+    matchLabels:
+      app: test-fe
+  template:
+    metadata:
+      labels:
+        app: test-fe
+    spec:
+      containers:
+        - name: test-fe
+          image: testfe:latest
+          imagePullPolicy: Never
